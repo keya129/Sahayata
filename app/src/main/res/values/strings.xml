@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Sahayata0.1</string>
+    <string name="welcome_string">We are here to help you</string>
+    <string name="networkFailed">Network Request Not Reachable</string>
+    <string name="panic_button_string">PANIC BUTTON</string>
+    <string name="welcome_sahayata">Welcome to Sahayata</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+</resources>
