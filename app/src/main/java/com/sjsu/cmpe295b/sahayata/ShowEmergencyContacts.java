@@ -96,6 +96,8 @@ public class ShowEmergencyContacts extends AppCompatActivity {
                 tnumber.setText(StoreContactName.get(position));
 
 
+
+
                 return view;
             }
         };
@@ -106,10 +108,14 @@ public class ShowEmergencyContacts extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(ShowEmergencyContacts.this,"helo", Toast.LENGTH_LONG).show();
-
-
-                if(stateChanged) {
+                TextView tvname=(TextView) listView.getChildAt(position).findViewById(R.id.name);
+                TextView tvnum=(TextView) listView.getChildAt(position).findViewById(R.id.number);
+                String fromdbname = new DBHelper(getApplicationContext()).getData( tvname.getText().toString());
+                System.out.println("value"+fromdbname);
+                if(fromdbname!=null && fromdbname.equals(tvnum.getText().toString())){
                     listView.getChildAt(position).setBackgroundResource(android.R.color.holo_green_dark);
+                    int s = new DBHelper(getApplicationContext()).deleteData( tvname.getText().toString());
+
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setTitle("Sahayata For You");
                     alertDialogBuilder.setMessage("Removed from Emergency Contacts")
@@ -125,7 +131,9 @@ public class ShowEmergencyContacts extends AppCompatActivity {
                     // show it
 
                     alertDialog.show();
-                } else {
+
+                }else{
+                    Boolean cursor1 = new DBHelper(getApplicationContext()).addDatabase( tvname.getText().toString(),tvnum.getText().toString());
                     listView.getChildAt(position).setBackgroundColor(Color.parseColor("#ff0000"));
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setTitle("Sahayata For You");
@@ -143,7 +151,8 @@ public class ShowEmergencyContacts extends AppCompatActivity {
 
                     alertDialog.show();
                 }
-                stateChanged = !stateChanged;
+
+
 
 
 

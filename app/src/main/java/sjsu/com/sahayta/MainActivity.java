@@ -18,6 +18,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.FloatMath;
 
+import com.sjsu.cmpe295b.sahayata.R;
+
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity{

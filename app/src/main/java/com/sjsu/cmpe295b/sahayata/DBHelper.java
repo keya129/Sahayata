@@ -13,11 +13,11 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "Restaurant.db";
+    private static final String DB_NAME = "Sahayata.db";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE FAV (NAME TEXT PRIMARY KEY, RESULT TEXT)";
+            "CREATE TABLE EMERGENCY_CONTACTS (NAME TEXT PRIMARY KEY, PHNUMBER NUMBER)";
     private static final String  SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS FAV";
+            "DROP TABLE IF EXISTS EMERGENCY_CONTACTS";
 
     public DBHelper(Context context){
         super(context,DB_NAME, null,1);
@@ -38,28 +38,37 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addDatabase (String name, String result){
+    public boolean addDatabase (String name, String number){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("NAME", name);
-        values.put("RESULT", result);
-        db.insert("FAV", null, values);
+        values.put("PHNUMBER", number);
+        db.insert("EMERGENCY_CONTACTS", null, values);
         return true;
     }
 
     public String getData (String name){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT RESULT FROM FAV WHERE NAME =" + name, null);
-        cursor.moveToFirst();
-        String ret = cursor.getString(1);
-        cursor.close();
+        String ret;
+        //System.out.println("SELECT PHNUMBER FROM EMERGENCY_CONTACTS WHERE NAME ='" +name+"'");
+        try {
+            Cursor cursor = db.rawQuery("SELECT PHNUMBER FROM EMERGENCY_CONTACTS WHERE NAME ='" +name+"'", null);
+            cursor.moveToFirst();
+            ret = cursor.getString(0);
+            //System.out.println(ret);
+            cursor.close();
+        }
+        catch (Exception e){
+            return null;
+        }
+
         return ret;
     }
 
     public Cursor getAllData () {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM FAV", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM EMERGENCY_CONTACTS", null);
         cursor.moveToFirst();
         return cursor;
     }
@@ -67,13 +76,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public int deleteData (String name){
         String[] ar = {name};
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("FAV", "NAME = ?", ar);
+        return db.delete("EMERGENCY_CONTACTS", "NAME = ?", ar);
     }
 
     public int getCount () {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM FAV", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM EMERGENCY_CONTACTS", null);
         while (cursor.moveToNext()) {
             count++;
         }
