@@ -57,8 +57,10 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -296,13 +298,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.nav_sos) {
 
         } else if (id == R.id.nav_share) {
 
@@ -413,7 +409,19 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(MainActivity.this,"hello", Toast.LENGTH_LONG).show();
 
         mMap = map;
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.style));
 
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -488,17 +496,39 @@ public class MainActivity extends AppCompatActivity
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
         //Toast.makeText(MainActivity.this,"hello markere", Toast.LENGTH_LONG).show();
-
-        mMap.addMarker(new MarkerOptions()
-                .title(getString(R.string.incident_report_title))
+        MarkerOptions marker1=new MarkerOptions()
+                .title("You are here")
                 .position(new LatLng(mLastKnownLocation.getLatitude(),
                         mLastKnownLocation.getLongitude()))
-                .snippet(getString(R.string.default_info_snippet)));
+                .snippet(getString(R.string.default_info_snippet));
+
+        marker1.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_man));
+
+
+        Marker m=mMap.addMarker(marker1);
+        m.showInfoWindow();
+
+        MarkerOptions marker2=new MarkerOptions()
+                .title("Carefull!! Incident reported")
+                .position(new LatLng(37.3290, -121.8888))
+                .snippet("Click to report incident");
+
+        marker2.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_msg));
+        MarkerOptions marker3=new MarkerOptions()
+                .title("Carefull!! Incident reported")
+                .position(new LatLng(37.3327, -121.8841))
+                .snippet("Click to report incident");
+
+        marker3.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_msg));
+        mMap.addMarker(marker1);
+        mMap.addMarker(marker2);
+        mMap.addMarker(marker3);
+
         mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker arg0) {
                 // call an activity(xml file)
-                Intent intent = new Intent(MainActivity.this, ShowEmergencyContacts.class);
+                Intent intent = new Intent(MainActivity.this, ReportIncident.class);
                 startActivity(intent);
             }
 

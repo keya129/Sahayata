@@ -53,7 +53,7 @@ public class ShowEmergencyContacts extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstances) {
         super.onCreate(savedInstances);
-        setContentView(R.layout.emergency_contacts);
+        setContentView(R.layout.activity_contacts);
 
         setTitle("Emergency Contacts");
         listView = (ListView)findViewById(R.id.listview1);
